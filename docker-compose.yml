@@ -1,0 +1,21 @@
+version: "3"
+
+# docker pull univerio/php5dev
+
+services:
+  php5dev:
+    build:
+      context: ./
+      dockerfile: ./php5apache.docker
+    image: univerio/php5dev:latest
+    container_name: php5dev-image
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: username
+      MYSQL_PW: password
+      MYSQL_DBNAME: mydbname
+      XDEBUG_CONFIG: remote_host={{127.0.0.1}}
+    hostname: php5dev.univer.io
+    ports:
+      - 8111:80
+      - 9001:9001
