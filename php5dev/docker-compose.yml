@@ -5,8 +5,8 @@ version: "3"
 services:
   php5dev:
     build:
-      context: ./
-      dockerfile: ./Dockerfile
+      context: ../
+      dockerfile: ./php5dev/Dockerfile
     image: univerio/php5dev:latest
     container_name: php5dev-image
     environment:
