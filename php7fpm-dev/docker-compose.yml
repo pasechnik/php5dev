@@ -1,0 +1,12 @@
+version: "3"
+
+# docker pull univerio/php5dev
+
+services:
+  php7fpm-dev:
+    build:
+      context: ../
+      dockerfile: ./php7fpm-dev/Dockerfile
+    image: univerio/php7fpm-dev:latest
+    container_name: php7fpm-dev-build
+    hostname: php7fpm-dev-build.univer.io
