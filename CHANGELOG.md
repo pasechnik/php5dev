@@ -1,3 +1,8 @@
+## 0.3.0 (February 09, 2018)
+  - Merge branch 'development'
+  - Merge branch 'feature/php7' into development
+  - added php7-fpm-alpine dev
+
 ## 0.2.0 (February 03, 2018)
   - add composer
   - Merge branch 'development'
