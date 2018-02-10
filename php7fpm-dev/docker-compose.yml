@@ -7,6 +7,6 @@ services:
     build:
       context: ../
       dockerfile: ./php7fpm-dev/Dockerfile
-    image: univerio/php7fpm-dev:latest
+    image: univerio/phpdev:7fpm-latest
     container_name: php7fpm-dev-build
     hostname: php7fpm-dev-build.univer.io
