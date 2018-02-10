@@ -1,3 +1,8 @@
+## 0.4.0 (February 10, 2018)
+  - Merge branch 'development'
+  - Merge branch 'fix/php7dev' into development
+  - fixes
+
 ## 0.3.0 (February 09, 2018)
   - Merge branch 'development'
   - Merge branch 'feature/php7' into development
