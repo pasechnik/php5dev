@@ -16,7 +16,7 @@ LABEL Maintainer="Vladimir Pasechnik <vladimir.pasechnik@gmail.com>" \
 
 RUN apk update \
     && apk add  --no-cache git mysql-client curl openssh-client icu libpng libjpeg-turbo libmcrypt libmcrypt-dev \
-    && apk add --no-cache --virtual build-dependencies icu-dev \
+    && apk add --no-cache --virtual build-dependencies icu-dev shadow \
     libxml2-dev freetype-dev libpng-dev libjpeg-turbo-dev g++ make autoconf \
     && docker-php-source extract \
     && pecl install xdebug \
@@ -26,7 +26,7 @@ RUN apk update \
     && pecl install mcrypt-1.0.1 \
     && docker-php-ext-enable mcrypt \
     && docker-php-source delete \
-    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install pdo_mysql zip \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -37,9 +37,10 @@ RUN apk update \
     && apk del libmcrypt-dev \
     && rm -rf /tmp/*
 
+#    && chown -R www-data:www-data /var/www/html \
 # COPY php.ini /usr/local/etc/php/
-COPY ./index.php /var/www
+COPY ./index.php /var/www/html
 
-USER www-data
+#USER www-data
 
-WORKDIR /var/www
+WORKDIR /var/www/html
