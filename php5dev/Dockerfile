@@ -1,18 +1,32 @@
 FROM php:5-apache
 MAINTAINER Vladimir Pasechnik <vladimir.pasechnik@gmail.com>
 
-RUN apt-get update && apt-get -y install apt-utils && apt-get -y dist-upgrade
+WORKDIR /var/www/html
+
+RUN apt-get update && apt-get -y install apt-utils
 
 RUN apt-get -y install mc vim wget curl
 
-RUN sed -i 's#AllowOverride None#AllowOverride All#' /etc/apache2/apache2.conf
+# SSl stuff
+RUN sed -i 's#AllowOverride None#AllowOverride All#' /etc/apache2/apache2.conf; \
+    sed -i 's/^ServerSignature/#ServerSignature/g' /etc/apache2/conf-available/security.conf; \
+    sed -i 's/^ServerTokens/#ServerTokens/g' /etc/apache2/conf-available/security.conf; \
+    echo "ServerSignature Off" >> /etc/apache2/conf-available/security.conf; \
+    echo "ServerTokens Prod" >> /etc/apache2/conf-available/security.conf; \
+    a2enmod ssl; \
+    a2enmod headers; \
+    a2ensite default-ssl; \
+    echo "SSLProtocol ALL -SSLv2 -SSLv3" >> /etc/apache2/apache2.conf
+COPY ./ssl/localhost.crt /etc/ssl/certs/ssl-cert-snakeoil.pem
+COPY ./ssl/localhost.key /etc/ssl/private/ssl-cert-snakeoil.key
+# /SSL
 
+# Php
 RUN a2enmod rewrite
 RUN docker-php-ext-install mysql pdo pdo_mysql mysqli
 
 RUN apt-get -y install libzip-dev
 RUN docker-php-ext-install zip
-
 
 RUN pecl install xdebug-2.2.7
 RUN docker-php-ext-enable xdebug
@@ -39,8 +53,6 @@ RUN curl -s -f -L -o /tmp/installer.php https://raw.githubusercontent.com/compos
  && composer --ansi --version --no-interaction \
  && rm -rf /tmp/* /tmp/.htaccess
 
-WORKDIR /var/www/html
-
 COPY ./index.php /var/www/html
 
 RUN chown -R www-data.www-data /var/www/html
@@ -48,3 +60,6 @@ RUN chmod -R a+r /var/www/html
 #RUN chmod -R u+w /var/www/html/tmp
 #RUN find /var/www/html -type d -exec chmod 755 {} \;
 RUN ls -alF /var/www/html
+
+EXPOSE 80
+EXPOSE 443
