@@ -5,7 +5,7 @@ WORKDIR /var/www/html
 
 RUN apt-get update && apt-get -y install apt-utils
 
-RUN apt-get -y install mc vim wget curl
+RUN apt-get -y install mc vim wget curl git
 
 # SSl stuff
 RUN sed -i 's#AllowOverride None#AllowOverride All#' /etc/apache2/apache2.conf; \
